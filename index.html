@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Eldoret High School — Elimu ni Nuru</title>
+<meta name="description" content="Eldoret High School — a secondary school in Eldoret, Kenya, offering broad academic programs, experienced faculty and a full co-curricular life." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0F2A1E;
+    --bg-deep: #0A2016;
+    --panel: #153524;
+    --cream: #F6F1E4;
+    --cream-dim: #E8E0C8;
+    --ink: #1E2B20;
+    --ink-dim: #566153;
+    --ink-onlight-faint: #8A9284;
+    --line: rgba(246,241,228,0.16);
+    --line-soft: rgba(246,241,228,0.08);
+    --text: #EDE9D8;
+    --text-dim: #A9B6A9;
+    --text-faint: #6C7C6E;
+    --gold: #D4A73D;
+    --gold-soft: rgba(212,167,61,0.18);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 15% -10%, #16402C 0%, var(--bg) 48%),
+      var(--bg);
+    color: var(--text);
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3,h4,.display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    line-height:1.14;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  p{ margin:0; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ margin:0; padding:0; list-style:none; }
+  button{ font-family:inherit; }
+  ::selection{ background: var(--gold); color:#1E2B20; }
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+
+  .wrap{ max-width:1160px; margin:0 auto; padding:0 clamp(20px,5vw,56px); }
+
+  /* -------- folio rule, a recurring "prospectus page" motif -------- */
+  .folio{
+    display:flex; align-items:center; gap:14px;
+    font-family:'Fraunces', serif;
+    font-size:13px;
+    color: var(--gold);
+    margin-bottom:18px;
+  }
+  .folio::after{ content:""; flex:1; height:1px; background: var(--line); }
+
+  /* -------- top nav -------- */
+  header.site-nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background: rgba(10,32,22,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav-inner{
+    max-width:1160px; margin:0 auto; padding:0 clamp(20px,5vw,56px);
+    height:74px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; cursor:pointer; }
+  .crest{
+    width:34px; height:34px;
+    border:1px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-weight:600; font-size:14px;
+    color: var(--gold);
+    transform: rotate(45deg);
+  }
+  .crest span{ transform: rotate(-45deg); }
+  .brand-text{ line-height:1.2; }
+  .brand-text strong{ font-family:'Fraunces', serif; font-size:17px; display:block; }
+  .brand-text span{ font-size:11px; color: var(--text-faint); letter-spacing:0.02em; }
+
+  nav.links{ display:flex; gap:4px; align-items:center; }
+  nav.links button{
+    background:none; border:none; cursor:pointer;
+    color: var(--text-dim); font-size:14.5px; padding:9px 16px; position:relative;
+    transition: color .2s ease;
+  }
+  nav.links button:hover{ color: var(--text); }
+  nav.links button.active{ color: var(--text); }
+  nav.links button.active::after{
+    content:""; position:absolute; left:16px; right:16px; bottom:2px; height:2px; background: var(--gold);
+  }
+  .nav-cta{
+    border:1px solid var(--line) !important; color: var(--text) !important; margin-left:10px;
+  }
+  .nav-cta:hover{ border-color: var(--gold) !important; color: var(--gold) !important; }
+
+  .hamburger{
+    display:none; background:none; border:1px solid var(--line);
+    width:40px; height:40px; cursor:pointer; position:relative;
+  }
+  .hamburger span, .hamburger span::before, .hamburger span::after{
+    content:""; position:absolute; left:10px; right:10px; height:1px; background: var(--text);
+  }
+  .hamburger span{ top:19px; }
+  .hamburger span::before{ top:-6px; }
+  .hamburger span::after{ top:6px; }
+
+  /* -------- page shell / transitions -------- */
+  main{ margin-top:74px; }
+  .page{ display:none; min-height:calc(100vh - 74px); padding-bottom:90px; }
+  .page.active{ display:block; }
+  .page.enter{ animation: pageIn .6s cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes pageIn{
+    from{ opacity:0; transform: perspective(1200px) rotateX(3deg) translateY(20px); }
+    to{ opacity:1; transform: perspective(1200px) rotateX(0) translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){ .page.enter{ animation:none; } html{ scroll-behavior:auto; } }
+
+  section{ padding: clamp(60px,8vw,100px) 0; }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:24px;
+    margin-bottom:44px; border-bottom:1px solid var(--line); padding-bottom:18px;
+  }
+  .section-head h2{ font-size: clamp(27px,3.4vw,38px); }
+  .section-head .idx{ font-size:13px; color: var(--text-faint); white-space:nowrap; padding-bottom:5px; font-family:'Fraunces',serif; }
+
+  /* ================= HOME / HERO ================= */
+  .hero{
+    padding-top: clamp(46px,8vw,80px);
+    display:grid; grid-template-columns: 1fr 0.92fr; gap:44px; align-items:center;
+  }
+  .hero-copy .folio{ max-width:280px; }
+  .hero-copy h1{ font-size: clamp(36px,5.2vw,58px); color: var(--text); }
+  .hero-copy h1 em{ font-style:normal; color: var(--gold); }
+  .motto{
+    margin-top:16px; font-family:'Fraunces', serif; font-style: italic;
+    font-size: clamp(16px,1.9vw,19px); color: var(--text-dim);
+  }
+  .hero-copy .pitch{ margin-top:20px; max-width:48ch; color: var(--text-dim); font-size:16px; }
+  .hero-actions{ margin-top:32px; display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    font-family:'Fraunces', serif; font-size:14.5px; padding:13px 24px;
+    border:1px solid var(--line); cursor:pointer; background:transparent; color: var(--text);
+    transition: border-color .2s ease, transform .2s ease, background .2s ease, color .2s ease;
+  }
+  .btn-primary{ background: var(--gold); border-color: var(--gold); color:#1E2B20; font-weight:600; }
+  .btn-primary:hover{ transform: translateY(-2px); }
+  .btn-ghost:hover{ border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  .hero-stats{
+    margin-top:48px; display:grid; grid-template-columns: repeat(4,1fr);
+    border-top:1px solid var(--line); padding-top:22px; gap:10px;
+  }
+  .stat b{ display:block; font-family:'Fraunces',serif; font-size:clamp(21px,2.5vw,26px); color: var(--text); }
+  .stat span{ font-size:12px; color: var(--text-faint); }
+
+  .book-stage{ position:relative; height: clamp(320px,40vw,460px); }
+  .book-stage canvas{ width:100%; height:100%; display:block; }
+  .book-caption{ position:absolute; bottom:6px; left:6px; font-size:12px; color: var(--text-faint); font-family:'Fraunces',serif; font-style:italic; }
+
+  .why-strip{
+    margin-top:70px; border-top:1px solid var(--line); padding-top:40px;
+    display:grid; grid-template-columns: repeat(4,1fr); gap:24px;
+  }
+  .why-item h4{ font-size:17px; margin-bottom:8px; display:flex; align-items:baseline; gap:10px; }
+  .why-item h4 i{ font-style:normal; color: var(--gold); font-family:'Fraunces',serif; font-size:14px; }
+  .why-item p{ font-size:14px; color: var(--text-dim); }
+
+  /* ================= CARD PRIMITIVES ================= */
+  .card{
+    background: linear-gradient(180deg, var(--panel), var(--bg-deep));
+    border:1px solid var(--line); padding:26px; position:relative;
+    transition: transform .25s ease, border-color .25s ease; will-change: transform;
+  }
+  .card:hover{ border-color: rgba(212,167,61,0.5); }
+
+  .cluster-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:18px; perspective:1000px; }
+  .cluster-card{ transform: rotateX(var(--ry,0deg)) rotateY(var(--rx,0deg)); }
+  .cluster-card h4{ font-size:18px; margin-bottom:10px; }
+  .cluster-card p{ font-size:14px; color: var(--text-dim); }
+  .cluster-card .tag-line{ font-size:12px; color: var(--gold); font-family:'Fraunces',serif; font-style:italic; margin-top:14px; display:block; }
+
+  /* ================= ABOUT ================= */
+  .about-grid{ display:grid; grid-template-columns: 0.95fr 1.05fr; gap:56px; }
+  .about-lede p{ color: var(--text-dim); margin-bottom:16px; font-size:16px; }
+  .about-lede p:first-child{
+    font-size:19px; color: var(--text); font-family:'Fraunces',serif; font-weight:500; line-height:1.5;
+  }
+  .values-row{ margin-top:26px; display:flex; flex-wrap:wrap; gap:10px; }
+  .values-row span{ border:1px solid var(--line); padding:7px 14px; font-size:13px; color: var(--text-dim); }
+
+  .subhead{ font-size:13px; color: var(--text-faint); margin:56px 0 22px; padding-top:26px; border-top:1px solid var(--line); font-family:'Fraunces',serif; }
+
+  .team-grid{ display:grid; grid-template-columns: repeat(4,1fr); gap:18px; }
+  .team-card{ text-align:left; }
+  .team-card .initial{
+    width:44px; height:44px; border:1px solid var(--gold); color: var(--gold);
+    display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:16px; margin-bottom:16px;
+  }
+  .team-card h4{ font-size:16px; margin-bottom:4px; }
+  .team-card span{ font-size:12.5px; color: var(--text-faint); }
+
+  .facility-list{ display:grid; grid-template-columns: repeat(2,1fr); gap:1px; background: var(--line); border:1px solid var(--line); margin-top:6px; }
+  .facility-list div{ background: var(--bg-deep); padding:16px 18px; font-size:14px; color: var(--text-dim); display:flex; justify-content:space-between; gap:12px; }
+  .facility-list div b{ color: var(--text); font-weight:500; }
+
+  /* ================= NEWS ================= */
+  .news-toolbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:14px; }
+  .news-toolbar p{ color: var(--text-faint); font-size:13.5px; }
+  .news-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:20px; perspective:1000px; }
+  .news-card{ transform: rotateX(var(--ry,0deg)) rotateY(var(--rx,0deg)); }
+  .news-card .date{ font-family:'Fraunces',serif; font-size:12.5px; color: var(--gold); font-style:italic; }
+  .news-card h4{ font-size:18px; margin:12px 0 10px; }
+  .news-card p{ font-size:14px; color: var(--text-dim); margin-bottom:16px; }
+  .news-card .read{ font-size:13px; color: var(--gold); }
+  .notice{
+    margin-top:36px; padding:16px 18px; border:1px solid var(--line); font-size:13px; color: var(--text-faint);
+  }
+
+  /* ================= CONTACT ================= */
+  .contact-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:56px; }
+  .contact-list{ margin-top:28px; }
+  .contact-list li{ display:flex; justify-content:space-between; padding:16px 0; border-bottom:1px solid var(--line); font-size:15px; gap: 14px;}
+  .contact-list li span:first-child{ color: var(--text-faint); font-size:13.5px; white-space:nowrap; }
+  .contact-list li a, .contact-list li span:last-child{ color: var(--text); text-align:right; }
+  .contact-list li a:hover{ color: var(--gold); }
+
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-size:13px; color: var(--text-faint); margin-bottom:8px; }
+  .field input, .field select, .field textarea{
+    width:100%; background: var(--bg-deep); border:1px solid var(--line); color: var(--text);
+    padding:12px 14px; font-family:'Inter',sans-serif; font-size:14.5px; resize:vertical;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color: var(--gold); outline:none; }
+  .form-msg{ font-size:13px; color: var(--gold); margin-top:10px; min-height:16px; }
+
+  footer{ border-top:1px solid var(--line); padding: 46px 0 30px; }
+  .footer-grid{ display:grid; grid-template-columns: 1.3fr 1fr 1fr; gap:32px; margin-bottom:32px; }
+  .footer-grid h5{ font-family:'Fraunces',serif; font-size:14px; color: var(--gold); margin-bottom:14px; font-weight:500; }
+  .footer-grid li{ font-size:13.5px; color: var(--text-dim); padding:5px 0; }
+  .footer-grid a:hover{ color: var(--gold); }
+  .footer-bottom{
+    border-top:1px solid var(--line); padding-top:20px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-size:12.5px; color: var(--text-faint);
+  }
+  .footer-bottom a{ color: var(--text-dim); }
+  .footer-bottom a:hover{ color: var(--gold); }
+
+  @media (max-width:900px){
+    nav.links{
+      position:fixed; top:74px; left:0; right:0; background: var(--bg-deep);
+      border-bottom:1px solid var(--line); flex-direction:column; align-items:stretch;
+      padding:10px 20px 20px; display:none;
+    }
+    nav.links.open{ display:flex; }
+    nav.links button{ text-align:left; padding:13px 4px; border-bottom:1px solid var(--line-soft); }
+    .nav-cta{ margin:10px 0 0; text-align:center; }
+    .hamburger{ display:block; }
+
+    .hero{ grid-template-columns:1fr; }
+    .hero-stats{ grid-template-columns: repeat(2,1fr); row-gap:22px; }
+    .why-strip{ grid-template-columns: 1fr 1fr; }
+    .about-grid, .contact-grid{ grid-template-columns:1fr; }
+    .cluster-grid, .news-grid{ grid-template-columns: 1fr 1fr; }
+    .team-grid{ grid-template-columns: 1fr 1fr; }
+    .facility-list{ grid-template-columns:1fr; }
+    .footer-grid{ grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width:560px){
+    .cluster-grid, .news-grid, .why-strip, .team-grid, .footer-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <div class="brand" data-nav="home">
+      <div class="crest"><span>EHS</span></div>
+      <div class="brand-text">
+        <strong>Eldoret High School</strong>
+        <span>Elimu ni Nuru</span>
+      </div>
+    </div>
+    <nav class="links" id="navLinks">
+      <button data-nav="home" class="active">Home</button>
+      <button data-nav="about">About</button>
+      <button data-nav="news">News</button>
+      <button data-nav="contact" class="nav-cta">Contact</button>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation"><span></span></button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= HOME ================= -->
+  <section class="page active" id="page-home" data-page="home">
+    <div class="wrap">
+      <div class="hero">
+        <div class="hero-copy">
+          <p class="folio">Eldoret, Uasin Gishu County</p>
+          <h1>Where every learner finds their <em>light</em>.</h1>
+          <p class="motto">"Elimu ni Nuru" — education is light.</p>
+          <p class="pitch">Eldoret High School offers a broad academic programme across the sciences, humanities, languages and technical subjects, backed by experienced teachers and a full calendar of co-curricular life.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" data-nav="about">Explore academics</button>
+            <button class="btn btn-ghost" data-nav="contact">Plan a visit</button>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><b>6</b><span>Subject clusters</span></div>
+            <div class="stat"><b>1:15</b><span>Teacher–student ratio</span></div>
+            <div class="stat"><b>12+</b><span>Clubs &amp; societies</span></div>
+            <div class="stat"><b>4</b><span>School houses</span></div>
+          </div>
+        </div>
+
+        <div class="book-stage" id="bookStage" aria-hidden="true">
+          <canvas id="bookCanvas"></canvas>
+          <p class="book-caption">Every page, a subject. Every subject, a door.</p>
+        </div>
+      </div>
+
+      <div class="why-strip">
+        <div class="why-item"><h4><i>01</i> Broad Programmes</h4><p>Sciences, humanities, languages and technical subjects taught to KCSE standard.</p></div>
+        <div class="why-item"><h4><i>02</i> Transparent Fees</h4><p>A clear termly fee structure with no hidden costs, shared at enrolment.</p></div>
+        <div class="why-item"><h4><i>03</i> A Full Calendar</h4><p>Sports days, science fairs and cultural events run through every term.</p></div>
+        <div class="why-item"><h4><i>04</i> Dedicated Teachers</h4><p>An experienced faculty who know their students by name, not number.</p></div>
+      </div>
+
+      <p class="subhead">Subject clusters</p>
+      <div class="cluster-grid" id="clusterGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+  <section class="page" id="page-about" data-page="about">
+    <div class="wrap">
+      <div class="section-head"><h2>About</h2><span class="idx">Page 02</span></div>
+
+      <div class="about-grid">
+        <div class="about-lede">
+          <p>Eldoret High School exists to prepare young people not just for exams, but for the choices that come after them.</p>
+          <p>We run a full KCSE curriculum across the sciences, humanities, languages and technical subjects, and pair it with a co-curricular life that gives every student somewhere to belong — on a field, in a lab, on a stage, or in a club.</p>
+          <p>Our teachers are the constant: experienced, present, and known to parents by name. Class sizes are kept small enough that no student goes unnoticed.</p>
+          <p>We are a day and boarding school serving families across Eldoret and the wider Uasin Gishu region.</p>
+
+          <div class="values-row">
+            <span>Discipline</span><span>Curiosity</span><span>Community</span><span>Integrity</span><span>Service</span>
+          </div>
+        </div>
+
+        <div class="about-visual">
+          <p class="folio">Mission</p>
+          <p style="color:var(--text-dim); font-size:15px; margin-bottom:28px;">To provide a well-rounded education that develops academic excellence, strong character and a sense of service — so that every graduate leaves ready for university, work, or whatever they choose next.</p>
+          <p class="folio">Vision</p>
+          <p style="color:var(--text-dim); font-size:15px;">To be a school that families in Eldoret trust to bring out the best in their children, academically and personally.</p>
+        </div>
+      </div>
+
+      <p class="subhead">Leadership</p>
+      <div class="team-grid">
+        <div class="card team-card"><div class="initial">DK</div><h4>Daniel Kiprotich</h4><span>Principal</span></div>
+        <div class="card team-card"><div class="initial">FC</div><h4>Faith Chebet</h4><span>Deputy Principal</span></div>
+        <div class="card team-card"><div class="initial">PW</div><h4>Peter Wanjala</h4><span>Director of Studies</span></div>
+        <div class="card team-card"><div class="initial">MN</div><h4>Mercy Naliaka</h4><span>Dean of Students</span></div>
+      </div>
+
+      <p class="subhead">Facilities</p>
+      <div class="facility-list">
+        <div><b>Science laboratories</b><span>Biology, Chemistry, Physics</span></div>
+        <div><b>Computer lab</b><span>Networked, 40 workstations</span></div>
+        <div><b>Library</b><span>Reference &amp; revision space</span></div>
+        <div><b>Sports grounds</b><span>Football, athletics, volleyball</span></div>
+        <div><b>Boarding houses</b><span>Four houses, matron-supervised</span></div>
+        <div><b>Assembly hall</b><span>Music, drama &amp; events</span></div>
+      </div>
+
+      <p class="notice">Leadership names, facilities and figures on this page are placeholder content for the template — swap in your school's real details before publishing.</p>
+    </div>
+  </section>
+
+  <!-- ================= NEWS ================= -->
+  <section class="page" id="page-news" data-page="news">
+    <div class="wrap">
+      <div class="section-head"><h2>News &amp; Events</h2><span class="idx">Page 03</span></div>
+
+      <div class="news-toolbar">
+        <h3 style="font-size:19px;">From the school</h3>
+        <p>Sample entries — replace with real updates once you're publishing</p>
+      </div>
+
+      <div class="news-grid" id="newsGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section class="page" id="page-contact" data-page="contact">
+    <div class="wrap">
+      <div class="section-head"><h2>Contact</h2><span class="idx">Page 04</span></div>
+
+      <div class="contact-grid">
+        <div>
+          <p style="max-width:44ch; color:var(--text-dim); font-size:16px;">Reach out about admissions, fee structures, or to arrange a visit to the school.</p>
+
+          <ul class="contact-list">
+            <li><span>Address</span><span>Eldoret, Uasin Gishu County, Kenya</span></li>
+            <li><span>Phone</span><a href="tel:+254700000000">+254 700 000 000</a></li>
+            <li><span>Email</span><a href="mailto:info@eldorethighschool.ac.ke">info@eldorethighschool.ac.ke</a></li>
+            <li><span>Office hours</span><span>Mon–Fri, 8:00 – 17:00</span></li>
+          </ul>
+
+          <div class="notice">Phone and email above are placeholders — update with the school's real contact details.</div>
+        </div>
+
+        <div>
+          <form id="contactForm">
+            <div class="field">
+              <label for="cf-name">Name</label>
+              <input id="cf-name" type="text" required placeholder="Your full name">
+            </div>
+            <div class="field">
+              <label for="cf-email">Email</label>
+              <input id="cf-email" type="email" required placeholder="you@example.com">
+            </div>
+            <div class="field">
+              <label for="cf-reason">Reason for contact</label>
+              <select id="cf-reason">
+                <option>Admissions enquiry</option>
+                <option>Fee structure</option>
+                <option>Arrange a visit</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="cf-message">Message</label>
+              <textarea id="cf-message" rows="5" required placeholder="Tell us a bit about your enquiry"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send message</button>
+            <p class="form-msg" id="formMsg"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>Eldoret High School</h5>
+        <p style="font-size:13.5px; color:var(--text-dim); max-width:32ch;">A day and boarding secondary school in Eldoret, Kenya. Elimu ni Nuru — education is light.</p>
+      </div>
+      <div>
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#" data-nav="home">Home</a></li>
+          <li><a href="#" data-nav="about">About</a></li>
+          <li><a href="#" data-nav="news">News</a></li>
+          <li><a href="#" data-nav="contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Find Us</h5>
+        <ul>
+          <li>Eldoret, Uasin Gishu County</li>
+          <li>+254 700 000 000</li>
+          <li>info@eldorethighschool.ac.ke</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Eldoret High School.</span>
+      <span>Site by <a href="https://phillipkolale.github.io/apluswebsiteandgraphicsdevelopers/Home.html" target="_blank" rel="noopener">A+ Website &amp; Graphics Developers</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------------- Navigation ---------------- */
+  const navButtons = document.querySelectorAll('[data-nav]');
+  const pages = document.querySelectorAll('.page');
+  const navLinks = document.getElementById('navLinks');
+  const hamburger = document.getElementById('hamburger');
+
+  function goTo(name){
+    document.querySelectorAll('#navLinks button').forEach(b => b.classList.toggle('active', b.dataset.nav === name));
+    pages.forEach(p => {
+      if(p.dataset.page === name){
+        p.classList.add('active'); p.classList.remove('enter');
+        void p.offsetWidth; p.classList.add('enter');
+      } else { p.classList.remove('active'); }
+    });
+    navLinks.classList.remove('open');
+    window.scrollTo({top:0});
+  }
+  navButtons.forEach(btn => btn.addEventListener('click', (e) => { e.preventDefault(); goTo(btn.dataset.nav); }));
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+  /* ---------------- tilt helper ---------------- */
+  function applyTilt(card){
+    if(reduceMotion) return;
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.setProperty('--rx', (x * 8).toFixed(2) + 'deg');
+      card.style.setProperty('--ry', (-y * 8).toFixed(2) + 'deg');
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.setProperty('--rx', '0deg'); card.style.setProperty('--ry', '0deg');
+    });
+  }
+
+  /* ---------------- Subject clusters ---------------- */
+  const clusters = [
+    { name: "Sciences", desc: "Biology, Chemistry and Physics, taught with a full laboratory programme.", tag: "Labs · practicals · projects" },
+    { name: "Humanities", desc: "History, Geography and Christian Religious Education.", tag: "Research · debate · field trips" },
+    { name: "Languages", desc: "English, Kiswahili and French, spoken and written to fluency.", tag: "Reading · writing · speech" },
+    { name: "Technical & Applied", desc: "Computer Studies, Business Studies and Agriculture.", tag: "Hands-on · practical exams" },
+    { name: "Mathematics", desc: "A structured pathway from core to advanced problem-solving.", tag: "Foundations · competitions" },
+    { name: "Creative Arts", desc: "Music, Drama and Art, with regular showcases each term.", tag: "Rehearsal · performance" }
+  ];
+  const clusterGrid = document.getElementById('clusterGrid');
+  clusters.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'card cluster-card';
+    card.innerHTML = `<h4>${c.name}</h4><p>${c.desc}</p><span class="tag-line">${c.tag}</span>`;
+    clusterGrid.appendChild(card);
+    applyTilt(card);
+  });
+
+  /* ---------------- News ---------------- */
+  const news = [
+    { date: "Term 2, Week 3", title: "Science & Innovation Fair", body: "Students across all forms presented projects ranging from water filtration to simple robotics." },
+    { date: "Term 2, Week 1", title: "Inter-House Athletics Meet", body: "The four school houses competed across track and field events for the termly cup." },
+    { date: "Term 1, Week 9", title: "KCSE Results Briefing", body: "The Director of Studies presented last year's results and the subject strategy for the year ahead." }
+  ];
+  const newsGrid = document.getElementById('newsGrid');
+  news.forEach(n => {
+    const card = document.createElement('div');
+    card.className = 'card news-card';
+    card.innerHTML = `<span class="date">${n.date}</span><h4>${n.title}</h4><p>${n.body}</p><span class="read">Read more →</span>`;
+    newsGrid.appendChild(card);
+    applyTilt(card);
+  });
+
+  /* ---------------- Contact form (mailto) ---------------- */
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('cf-name').value;
+    const email = document.getElementById('cf-email').value;
+    const reason = document.getElementById('cf-reason').value;
+    const message = document.getElementById('cf-message').value;
+    const body = `From: ${name} (${email})\nReason: ${reason}\n\n${message}`;
+    window.location.href = `mailto:info@eldorethighschool.ac.ke?subject=${encodeURIComponent(reason)}&body=${encodeURIComponent(body)}`;
+    document.getElementById('formMsg').textContent = 'Opening your email client…';
+  });
+
+  /* ---------------- 3D open book + rising light (Three.js) ---------------- */
+  (function(){
+    const stage = document.getElementById('bookStage');
+    const canvas = document.getElementById('bookCanvas');
+    if(!window.THREE || !stage || !canvas) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, stage.clientWidth / stage.clientHeight, 0.1, 100);
+    camera.position.set(0, 1.1, 5.2);
+    camera.lookAt(0, 0.1, 0);
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(stage.clientWidth, stage.clientHeight);
+
+    const group = new THREE.Group();
+    scene.add(group);
+
+    // book: two hinged pages + spine
+    const pageMat = new THREE.MeshBasicMaterial({ color: 0xF6F1E4, side: THREE.DoubleSide, transparent:true, opacity:0.94 });
+    const lineMat = new THREE.LineBasicMaterial({ color: 0xD4A73D, transparent:true, opacity:0.5 });
+
+    function makePage(sign){
+      const pageGroup = new THREE.Group();
+      const geo = new THREE.PlaneGeometry(1.7, 2.2, 6, 6);
+      const mesh = new THREE.Mesh(geo, pageMat);
+      mesh.position.x = sign * 0.85;
+      pageGroup.add(mesh);
+
+      // a few "text" rule lines on the page
+      for(let i=0;i<5;i++){
+        const y = 0.75 - i * 0.32;
+        const pts = [
+          new THREE.Vector3(sign*0.25, y, 0.01),
+          new THREE.Vector3(sign*1.5, y, 0.01)
+        ];
+        const lg = new THREE.BufferGeometry().setFromPoints(pts);
+        pageGroup.add(new THREE.Line(lg, lineMat));
+      }
+      pageGroup.rotation.y = sign * 0.42;
+      return pageGroup;
+    }
+
+    const left = makePage(-1);
+    const right = makePage(1);
+    group.add(left, right);
+
+    // spine
+    const spine = new THREE.Mesh(
+      new THREE.BoxGeometry(0.05, 2.25, 0.08),
+      new THREE.MeshBasicMaterial({ color: 0xD4A73D })
+    );
+    group.add(spine);
+
+    group.rotation.x = 0.28;
+    group.position.y = -0.1;
+
+    // rising light particles
+    const PCOUNT = 90;
+    const positions = new Float32Array(PCOUNT * 3);
+    const speeds = new Float32Array(PCOUNT);
+    for(let i=0;i<PCOUNT;i++){
+      positions[i*3+0] = (Math.random()-0.5) * 4.2;
+      positions[i*3+1] = (Math.random()-0.5) * 3.2;
+      positions[i*3+2] = (Math.random()-0.5) * 2.2;
+      speeds[i] = 0.003 + Math.random() * 0.006;
+    }
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const pMat = new THREE.PointsMaterial({ color: 0xD4A73D, size: 0.035, transparent:true, opacity:0.75 });
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
+
+    let raf;
+    function animate(){
+      raf = requestAnimationFrame(animate);
+      if(!reduceMotion){
+        group.rotation.y = Math.sin(Date.now()*0.0004) * 0.25;
+
+        const pos = particles.geometry.attributes.position.array;
+        for(let i=0;i<PCOUNT;i++){
+          pos[i*3+1] += speeds[i];
+          if(pos[i*3+1] > 1.8){ pos[i*3+1] = -1.8; }
+        }
+        particles.geometry.attributes.position.needsUpdate = true;
+      }
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    function onResize(){
+      const w = stage.clientWidth, h = stage.clientHeight;
+      if(!w || !h) return;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    window.addEventListener('resize', onResize);
+    onResize();
+  })();
+</script>
+</body>
+</html>
